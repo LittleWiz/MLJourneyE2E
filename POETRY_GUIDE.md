@@ -83,12 +83,12 @@ Since `poetry shell` is no longer bundled by default in Poetry 2.x, use one of t
 ```bash
 poetry env activate
 ```
-
-This will print the shell command needed to activate the venv manually:
+This will print the shell command needed to activate the venv manually.  
+**On Windows, copy and run the printed command directly in your terminal, for example:**
 ```bash
-. path\to\venv\Scripts\activate   # Windows
-source /path/to/venv/bin/activate # macOS/Linux
+C:\Users\user\AppData\Local\pypoetry\Cache\virtualenvs\mljourneye2e-xxxx-py3.12\Scripts\activate.bat
 ```
+After running this, your prompt should change to show your Poetry environment (not `(base)`).
 
 #### Option B: Enable Legacy Shell Plugin
 ```bash
