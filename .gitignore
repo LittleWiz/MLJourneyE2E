@@ -1,0 +1,22 @@
+# Ignore log files and logs directory
+logs/
+*.log
+
+# Python/Poetry typical ignores
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv
+.env.*
+*.sqlite3
+*.db
+
+# VS Code settings
+.vscode/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS files
