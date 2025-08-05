@@ -7,7 +7,7 @@
    Relevant data was downloaded and placed in the `data` folder, typically as zipped files for easy management.
 
 3. **Logger Setup**  
-   A reusable logger was implemented in `utils/logger.py` to provide consistent logging across all modules. Log files are stored in the `logs` directory. 
+   A reusable logger was implemented in `utils/logger.py` to provide consistent logging across all modules. Log files are stored in the `logs` directory.
 
 4. **Data Ingestion**  
    The `eda/data_ingestor.py` module was created to read zipped data files and load the first file into a pandas DataFrame, using the logger for process tracking.
@@ -25,18 +25,32 @@
 
 7. **Data Preprocessing**  
    The `eda/data_preprocessor.py` module was created to:
-   - Convert month columns to datetime.
+   - Convert month columns to datetime and extract year/month as separate features.
    - Extract numeric features from storey range columns.
    - Process the `remaining_lease` column into a numeric format.
    - Provide a `preprocess_all` method to run all preprocessing steps in sequence.
 
 8. **Categorical Encoding**  
-   The `eda/data_encoder.py` module was implemented to automatically identify categorical columns and apply one-hot encoding, with logging for each step.
+   The `eda/data_encoder.py` module was enhanced to support both one-hot encoding for low-cardinality columns and frequency encoding for high-cardinality columns, reducing the risk of exceeding database column limits.
 
 9. **Database Integration**  
-   SQLAlchemy was used to connect to a PostgreSQL database. (REFER : PGSQL_GUIDE.md) Preprocessed features and targets are written to SQL tables for further use.
+   SQLAlchemy was used to connect to a PostgreSQL database (see `PGSQL_GUIDE.md`). Preprocessed features and targets are written to SQL tables for further use. Parquet files are also generated for batch/feature store integration.
 
 10. **Feature Store Setup**  
     PostgreSQL and pgAdmin were installed and configured. A dedicated database was created for Feast. The feature store was initialized using `feast init feature_store -t postgres`, and configuration was managed in `feature_store.yaml`.
 
----
+11. **Feast Feature Definitions**  
+    Entities and feature views were defined in `feature_store/feature_repo/definations.py` using both FileSource (for batch/offline features) and PostgreSQLSource (for direct DB integration). The schema was kept in sync with the processed data.
+
+12. **Feast Feature Store Operations**  
+    The `feature_store/feature_store.py` module was implemented to:
+    - Initialize the Feast Feature Store.
+    - Fetch historical and online features.
+    - Materialize features from offline to online store.
+    - Save and load datasets for training and inference.
+
+13. **Feast UI and CLI Usage**  
+    The Feast UI was launched using `feast ui --port 9000` for interactive exploration. CLI commands were used to list entities and feature views, and to apply changes.
+
+14. **Documentation**  
+    Step-by-step guides were created for Poetry (`POETRY_GUIDE.md`), PostgreSQL/pgAdmin (`PGSQL_GUIDE.md`), and Feast (`FEAST.md`) setup, ensuring reproducibility and ease of onboarding for new contributors.

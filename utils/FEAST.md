@@ -93,11 +93,21 @@ house_features_view = FeatureView(
     schema=[
         Field(name="storey_min", dtype=Int64),
         Field(name="storey_max", dtype=Int64),
-        # ... add all your feature fields ...
+        Field(name="storey_mean", dtype=Float32),
+        Field(name="floor_area_sqm", dtype=Float32),
+        Field(name="lease_commence_date", dtype=Int64),
+        Field(name="remaining_lease_years", dtype=Float32),
+        Field(name="month", dtype=String),
+        Field(name="town_freq", dtype=Float32),
+        Field(name="flat_type_freq", dtype=Float32),
+        Field(name="block_freq", dtype=Float32),
+        Field(name="street_name_freq", dtype=Float32),
+        Field(name="flat_model_freq", dtype=Float32),
     ],
     online=True,
     source=house_features_source,
 )
+# You can also define a FeatureView using PostgreSQLSource for direct DB integration.
 ```
 
 ---
@@ -135,7 +145,31 @@ Then open [http://localhost:9000](http://localhost:9000) in your browser.
 
 ---
 
-## 8️⃣ Troubleshooting
+## 8️⃣ Using the Feature Store in Code
+
+A utility class was implemented in `feature_store/feature_store.py` to simplify common Feast operations:
+- **Initialize the Feature Store**
+- **Fetch historical features** for training
+- **Fetch online features** for inference
+- **Materialize features** from offline to online store
+- **Save and load datasets** for training and inference
+
+Example usage:
+```python
+from feature_store.feature_store import FeastFeatureStore
+
+feast = FeastFeatureStore(path="feature_store/feature_repo")
+# Fetch historical features
+historical_df = feast.get_historical_features(entity_df, features)
+# Fetch online features
+online_features = feast.get_online_features(entity_rows, features)
+# Materialize features
+feast.materialize(start_date, end_date)
+```
+
+---
+
+## 9️⃣ Troubleshooting
 
 - **FileNotFoundError:**  
   Make sure your Parquet/CSV files are in the correct path as referenced in your `definations.py`.
@@ -143,14 +177,16 @@ Then open [http://localhost:9000](http://localhost:9000) in your browser.
   Passwords in `feature_store.yaml` must be strings (in quotes).
 - **Multiple timestamp columns:**  
   Only one column should be used as the event timestamp in your data sources.
+- **Path issues:**  
+  Use absolute or correct relative paths for all data sources.
 
 ---
 
-## 9️⃣ References
+## 🔟 References
 
 - [Feast Documentation](https://docs.feast.dev/)
 - [PGSQL_GUIDE.md](../PGSQL_GUIDE.md) for PostgreSQL setup
 
 ---
 
-You are now ready to use Feast as a feature store for
+You are now ready to use Feast as a feature store for your ML projects!
