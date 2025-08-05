@@ -3,15 +3,15 @@ import os
 import sys
 from datetime import datetime
 
-def setup_logger(logger_name, log_level=logging.INFO, console_level=logging.ERROR, stage_name=""):
+def setup_logger(logger_name, log_level=logging.INFO, console_level=logging.ERROR):
     """
     Set up and return a logger with both file and console handlers.
+    All logs go to a single file.
 
     Args:
         logger_name (str): Name of the logger (used for log file naming).
         log_level (int): Logging level for the file handler (default: logging.INFO).
         console_level (int): Logging level for the console handler (default: logging.ERROR).
-        stage_name (str): Custom stage name to include in log messages.
 
     Returns:
         logging.Logger: Configured logger instance.
@@ -24,7 +24,7 @@ def setup_logger(logger_name, log_level=logging.INFO, console_level=logging.ERRO
     logs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs")
     os.makedirs(logs_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_file = os.path.join(logs_dir, f"{logger_name}_{timestamp}.log")
+    log_file = os.path.join(logs_dir, f"E2EML_{timestamp}.log")
 
     logger = logging.getLogger(logger_name)
 
@@ -33,7 +33,7 @@ def setup_logger(logger_name, log_level=logging.INFO, console_level=logging.ERRO
         logger.setLevel(log_level)
 
         formatter = logging.Formatter(
-            f"[{stage_name} %(asctime)s] %(levelname)s %(name)s.%(funcName)s: %(message)s",
+            "[%(asctime)s] %(levelname)s %(name)s.%(filename)s.%(funcName)s: %(message)s",
             datefmt='%Y-%m-%d %H:%M:%S'
         )
 

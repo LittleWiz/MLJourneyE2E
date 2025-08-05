@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 from utils.logger import setup_logger
 
-logger = setup_logger("E2EML", log_level=logging.INFO, console_level=logging.ERROR, stage_name="EDA-data inspection")
+logger = setup_logger("E2EML", log_level=logging.INFO, console_level=logging.ERROR)
 
 class DataInspector:
     def __init__(self, df: pd.DataFrame):

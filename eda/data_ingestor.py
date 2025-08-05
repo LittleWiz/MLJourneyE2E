@@ -4,7 +4,7 @@ import zipfile
 import pandas as pd
 from utils.logger import setup_logger
 
-logger = setup_logger("E2EML", log_level=logging.INFO, console_level=logging.ERROR, stage_name="EDA-data_ingestion")
+logger = setup_logger("E2EML", log_level=logging.INFO, console_level=logging.ERROR)
 
 class DataIngestor:
     def __init__(self, data_dir: str):
