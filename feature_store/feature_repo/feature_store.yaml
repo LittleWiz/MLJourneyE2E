@@ -14,7 +14,7 @@ online_store:
     database: feast_online
     db_schema: public
     user: postgres
-    password: 1
+    password: "1"
 offline_store:
     type: postgres
     host: localhost
@@ -22,5 +22,5 @@ offline_store:
     database: feast_offline
     db_schema: public
     user: postgres
-    password: 1
+    password: "1"
 entity_key_serialization_version: 3
