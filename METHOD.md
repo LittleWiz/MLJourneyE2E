@@ -34,12 +34,9 @@
    The `eda/data_encoder.py` module was implemented to automatically identify categorical columns and apply one-hot encoding, with logging for each step.
 
 9. **Database Integration**  
-   SQLAlchemy was used to connect to a PostgreSQL database. Preprocessed features and targets are written to SQL tables for further use.
+   SQLAlchemy was used to connect to a PostgreSQL database. (REFER : PGSQL_GUIDE.md) Preprocessed features and targets are written to SQL tables for further use.
 
 10. **Feature Store Setup**  
     PostgreSQL and pgAdmin were installed and configured. A dedicated database was created for Feast. The feature store was initialized using `feast init feature_store -t postgres`, and configuration was managed in `feature_store.yaml`.
-
-11. **Documentation**  
-    Step-by-step guides were created for Poetry (`POETRY_GUIDE.md`) and PostgreSQL/pgAdmin (`PGSQL_GUIDE.md`) setup, ensuring reproducibility and ease of onboarding for new contributors.
 
 ---

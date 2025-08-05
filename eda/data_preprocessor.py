@@ -11,17 +11,21 @@ class DataPreprocessor:
         """
         self.df = df
 
-    def convert_month_to_datetime(self, column='month'):
+    def get_year_and_month_to_datetime(self, column='month'):
         """
         Convert the specified column to datetime format (YYYY-MM).
+        Extracts 'year' and 'month' as separate columns and drops the original column.
         Args:
             column (str): The column name to convert. Default is 'month'.
         Returns:
-            pd.DataFrame: DataFrame with the converted column.
+            pd.DataFrame: DataFrame with 'year' and 'month' columns.
         """
         if column in self.df.columns:
             self.df[column] = pd.to_datetime(self.df[column], format='%Y-%m')
-            logger.info(f"📅 Converted '{column}' column to datetime.")
+            self.df['year'] = self.df[column].dt.year
+            self.df['month_num'] = self.df[column].dt.month
+            self.df.drop(columns=[column], inplace=True)
+            logger.info(f"📅 Extracted 'year' and 'month_num' from '{column}' and dropped the original column.")
         else:
             logger.warning(f"⚠️ Column '{column}' not found in DataFrame.")
         return self.df
@@ -96,7 +100,7 @@ class DataPreprocessor:
         and process remaining lease. Returns the processed DataFrame.
         """
         logger.info("🚦 Starting full preprocessing pipeline...")
-        self.convert_month_to_datetime()
+        self.get_year_and_month_to_datetime()
         self.extract_storey_range_features()
         self.process_remaining_lease()
         logger.info("✅ Preprocessing complete.")

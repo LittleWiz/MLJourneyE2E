@@ -25,3 +25,22 @@ class DataEncoder:
         self.df = pd.get_dummies(self.df, columns=cat_cols, drop_first=True)
         logger.info("🔄 Applied one-hot encoding to categorical columns.")
         return self.df
+
+    def frequency_encode(self, threshold=0.05):
+        """
+        Frequency encode categorical columns. Rare categories (below threshold) are grouped as 'Other'.
+        Args:
+            threshold (float): Minimum frequency (as a fraction) to keep a category.
+        Returns:
+            pd.DataFrame: DataFrame with frequency-encoded categorical columns.
+        """
+        cat_cols = self.df.select_dtypes(include='object').columns.tolist()
+        for col in cat_cols:
+            freq = self.df[col].value_counts(normalize=True)
+            to_keep = freq[freq >= threshold].index
+            self.df[col] = self.df[col].apply(lambda x: x if x in to_keep else 'Other')
+            freq_map = self.df[col].value_counts(normalize=True)
+            self.df[col + '_freq'] = self.df[col].map(freq_map)
+            self.df.drop(columns=[col], inplace=True)
+            logger.info(f"🔢 Frequency-encoded '{col}' with threshold {threshold}.")
+        return self.df
