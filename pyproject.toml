@@ -19,7 +19,8 @@ dependencies = [
     "evidently (>=0.7.11,<0.8.0)",
     "psycopg (>=3.2.9,<4.0.0)",
     "psycopg-pool (>=3.2.6,<4.0.0)",
-    "deepchecks (>=0.19.1,<0.20.0)"
+    "deepchecks (>=0.19.1,<0.20.0)",
+    "seaborn (>=0.13.2,<0.14.0)"
 ]
 
 

@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 from datetime import datetime
 
 def setup_logger(logger_name, log_level=logging.INFO, console_level=logging.ERROR, stage_name=""):
@@ -18,7 +19,7 @@ def setup_logger(logger_name, log_level=logging.INFO, console_level=logging.ERRO
     Notes:
         - Log files are saved in the 'logs' folder at the project root.
         - If a logger with the same name already exists, it will be reused.
-        - Formatter includes stage name, timestamp, log level, logger name, and message.
+        - Formatter includes stage name, timestamp, log level, logger name, function name, and message.
     """
     logs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs")
     os.makedirs(logs_dir, exist_ok=True)
@@ -32,18 +33,18 @@ def setup_logger(logger_name, log_level=logging.INFO, console_level=logging.ERRO
         logger.setLevel(log_level)
 
         formatter = logging.Formatter(
-            f"[{stage_name} %(asctime)s] %(levelname)s %(name)s: %(message)s",
+            f"[{stage_name} %(asctime)s] %(levelname)s %(name)s.%(funcName)s: %(message)s",
             datefmt='%Y-%m-%d %H:%M:%S'
         )
 
         # File handler
-        file_handler = logging.FileHandler(log_file)
+        file_handler = logging.FileHandler(log_file, encoding='utf-8')
         file_handler.setLevel(log_level)
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 
-        # Console handler
-        console_handler = logging.StreamHandler()
+        # Console handler (no emoji, no stream reassignment)
+        console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setLevel(console_level)
         console_handler.setFormatter(formatter)
         logger.addHandler(console_handler)

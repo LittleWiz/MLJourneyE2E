@@ -23,3 +23,4 @@ eda/__pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+eda/__pycache__/data_ingest.cpython-312.pyc
